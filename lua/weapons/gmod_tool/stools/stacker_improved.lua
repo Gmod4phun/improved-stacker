@@ -258,22 +258,22 @@ local cvarFlags, cvarFlagsNotify
 
 if ( SERVER ) then
 	cvarFlags      = bit.bor( FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE )
-	cvarFlagsNotif = bit.bor( cvarFlags, FCVAR_NOTIFY )
+	cvarFlagsNotify = bit.bor( cvarFlags, FCVAR_NOTIFY )
 elseif ( CLIENT ) then
 	cvarFlags      = bit.bor( FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE )
-	cvarFlagsNotif = bit.bor( cvarFlags, FCVAR_NOTIFY )
+	cvarFlagsNotify = bit.bor( cvarFlags, FCVAR_NOTIFY )
 end
 
-local oldMaxTotal    = CreateConVar( "stacker_max_total",        -1, cvarFlagsNotif, "Defines the max amount of props that a player can have spawned from stacker" )
-local oldMaxCount    = CreateConVar( "stacker_max_count",        15, cvarFlagsNotif, "Defines the max amount of props that can be stacked at a time" )
-local oldDelay       = CreateConVar( "stacker_delay",           0.5, cvarFlagsNotif, "Determines the amount of time that must pass before a player can use stacker again" )
-local oldMaxOffX     = CreateConVar( "stacker_max_offsetx",     200, cvarFlagsNotif, "Defines the max distance on the x plane that stacked props can be offset (for individual control)" )
-local oldMaxOffY     = CreateConVar( "stacker_max_offsety",     200, cvarFlagsNotif, "Defines the max distance on the y plane that stacked props can be offset (for individual control)" )
-local oldMaxOffZ     = CreateConVar( "stacker_max_offsetz",     200, cvarFlagsNotif, "Defines the max distance on the z plane that stacked props can be offset (for individual control)" )
-local oldFreeze      = CreateConVar( "stacker_force_freeze",      0, cvarFlagsNotif, "Determines whether props should be forced to spawn frozen or not" )
-local oldWeld        = CreateConVar( "stacker_force_weld",        0, cvarFlagsNotif, "Determines whether props should be forced to spawn welded or not" )
-local oldNoCollide   = CreateConVar( "stacker_force_nocollide",   0, cvarFlagsNotif, "Determines whether props should be forced to spawn nocollided or not" )
-local oldStayInWorld = CreateConVar( "stacker_stayinworld",       1, cvarFlagsNotif, "Determines whether props should be restricted to spawning inside the world or not (addresses possible crashes)" )
+local oldMaxTotal    = CreateConVar( "stacker_max_total",        -1, cvarFlagsNotify, "Defines the max amount of props that a player can have spawned from stacker" )
+local oldMaxCount    = CreateConVar( "stacker_max_count",        15, cvarFlagsNotify, "Defines the max amount of props that can be stacked at a time" )
+local oldDelay       = CreateConVar( "stacker_delay",           0.5, cvarFlagsNotify, "Determines the amount of time that must pass before a player can use stacker again" )
+local oldMaxOffX     = CreateConVar( "stacker_max_offsetx",     200, cvarFlagsNotify, "Defines the max distance on the x plane that stacked props can be offset (for individual control)" )
+local oldMaxOffY     = CreateConVar( "stacker_max_offsety",     200, cvarFlagsNotify, "Defines the max distance on the y plane that stacked props can be offset (for individual control)" )
+local oldMaxOffZ     = CreateConVar( "stacker_max_offsetz",     200, cvarFlagsNotify, "Defines the max distance on the z plane that stacked props can be offset (for individual control)" )
+local oldFreeze      = CreateConVar( "stacker_force_freeze",      0, cvarFlagsNotify, "Determines whether props should be forced to spawn frozen or not" )
+local oldWeld        = CreateConVar( "stacker_force_weld",        0, cvarFlagsNotify, "Determines whether props should be forced to spawn welded or not" )
+local oldNoCollide   = CreateConVar( "stacker_force_nocollide",   0, cvarFlagsNotify, "Determines whether props should be forced to spawn nocollided or not" )
+local oldStayInWorld = CreateConVar( "stacker_stayinworld",       1, cvarFlagsNotify, "Determines whether props should be restricted to spawning inside the world or not (addresses possible crashes)" )
 
 local cvarMaxPerPlayer = CreateConVar( mode.."_max_per_player",      oldMaxTotal:GetInt(),    cvarFlags,      "Defines the max amount of props that a player can have spawned from stacker" )
 local cvarMaxPerStack  = CreateConVar( mode.."_max_per_stack",       oldMaxCount:GetInt(),    cvarFlags,      "Defines the max amount of props that can be stacked at a time" )
@@ -281,11 +281,11 @@ local cvarDelay        = CreateConVar( mode.."_delay",               oldDelay:Ge
 local cvarMaxOffX      = CreateConVar( mode.."_max_offsetx",         oldMaxOffX:GetFloat(),   cvarFlags,      "Defines the max distance on the x plane that stacked props can be offset (for individual control)" )
 local cvarMaxOffY      = CreateConVar( mode.."_max_offsety",         oldMaxOffY:GetFloat(),   cvarFlags,      "Defines the max distance on the y plane that stacked props can be offset (for individual control)" )
 local cvarMaxOffZ      = CreateConVar( mode.."_max_offsetz",         oldMaxOffZ:GetFloat(),   cvarFlags,      "Defines the max distance on the z plane that stacked props can be offset (for individual control)" )
-local cvarFreeze       = CreateConVar( mode.."_force_freeze",        oldFreeze:GetInt(),      cvarFlagsNotif, "Determines whether props should be forced to spawn frozen or not" )
-local cvarWeld         = CreateConVar( mode.."_force_weld",          oldWeld:GetInt(),        cvarFlagsNotif, "Determines whether props should be forced to spawn welded or not" )
-local cvarNoCollide    = CreateConVar( mode.."_force_nocollide",     oldNoCollide:GetInt(),   cvarFlagsNotif, "Determines whether props should be forced to spawn nocollided or not" )
+local cvarFreeze       = CreateConVar( mode.."_force_freeze",        oldFreeze:GetInt(),      cvarFlagsNotify, "Determines whether props should be forced to spawn frozen or not" )
+local cvarWeld         = CreateConVar( mode.."_force_weld",          oldWeld:GetInt(),        cvarFlagsNotify, "Determines whether props should be forced to spawn welded or not" )
+local cvarNoCollide    = CreateConVar( mode.."_force_nocollide",     oldNoCollide:GetInt(),   cvarFlagsNotify, "Determines whether props should be forced to spawn nocollided or not" )
 local cvarNoCollideAll = CreateConVar( mode.."_force_nocollide_all", 0,                       cvarFlags,      "(EXPERIMENTAL, DISABLED) Determines whether props should be nocollide with everything except players, vehicles, and npcs" )
-local cvarStayInWorld  = CreateConVar( mode.."_force_stayinworld",   oldStayInWorld:GetInt(), cvarFlagsNotif, "Determines whether props should be restricted to spawning inside the world or not (addresses possible crashes)" )
+local cvarStayInWorld  = CreateConVar( mode.."_force_stayinworld",   oldStayInWorld:GetInt(), cvarFlagsNotify, "Determines whether props should be restricted to spawning inside the world or not (addresses possible crashes)" )
 
 --[[--------------------------------------------------------------------------
 -- Console Commands
@@ -606,8 +606,10 @@ function TOOL:LeftClick( tr, isRightClick )
 		ply:ConCommand( mode.."_count "..newCount )
 		return false
 	end
-
-	if ( not IsValid( tr.Entity ) or tr.Entity:GetClass() ~= "prop_physics" ) then return false end
+	
+	-- check if we are stacking an effect
+	-- local isEffect = false
+	if ( not IsValid( tr.Entity ) or ( tr.Entity:GetClass() ~= "prop_physics" and tr.Entity:GetClass() ~= "prop_effect" ) ) then return false end
 	if ( CLIENT ) then return true end
 	
 	-- otherwise, stack 1 if right-clicking or get the client's stack size value
@@ -644,19 +646,25 @@ function TOOL:LeftClick( tr, isRightClick )
 
 	-- store the properties of the original prop so we can apply them to the stacked props
 	local ent = tr.Entity
+	local isEffect = ent:GetClass() == "prop_effect"
+	local effectEnt = isEffect and ent.AttachedEntity or ent
+	if isEffect then
+		effectEnt.parentEntity = ent
+	end
+	
 	local entPos   = ent:GetPos()
 	local entAng   = ent:GetAngles()
-	local entMod   = ent:GetModel()
-	local entSkin  = ent:GetSkin()
-	local entMat   = ent:GetMaterial()
+	local entMod   = effectEnt:GetModel()
+	local entSkin  = effectEnt:GetSkin()
+	local entMat   = effectEnt:GetMaterial()
 	local physMat  = ent:GetPhysicsObject():GetMaterial()
 	local physGrav = ent:GetPhysicsObject():IsGravityEnabled()
 	
 	-- setup a table to hold the original prop's color data so that we can apply it to the stacked props
 	local colorData = {
-		Color      = ent:GetColor(), 
-		RenderMode = ent:GetRenderMode(), 
-		RenderFX   = ent:GetRenderFX()
+		Color      = effectEnt:GetColor(), 
+		RenderMode = effectEnt:GetRenderMode(), 
+		RenderFX   = effectEnt:GetRenderFX()
 	}	
 		
 	local newEnt
@@ -665,7 +673,7 @@ function TOOL:LeftClick( tr, isRightClick )
 	
 	local direction, offset
 	-- we only need to calculate the distance once based on the direction the user selected
-	local distance = improvedstacker.GetDistance( stackMode, stackDirection, ent )
+	local distance = improvedstacker.GetDistance( stackMode, stackDirection, effectEnt )
 	
 	-- setup a new undo block so the player can undo the whole stack at once
 	undo.Create( mode )
@@ -701,7 +709,7 @@ function TOOL:LeftClick( tr, isRightClick )
 		if ( stayInWorld and not util.IsInWorld( entPos ) ) then self:SendError( L(prefix.."error_not_in_world", localify.GetLocale( self:GetOwner() )) ) break end
 		
 		-- create the new stacked entity
-		newEnt = ents.Create( "prop_physics" )
+		newEnt = isEffect and ents.Create("prop_effect") or ents.Create( "prop_physics" )
 		newEnt:SetModel( entMod )
 		newEnt:SetPos( entPos )
 		newEnt:SetAngles( entAng )
@@ -831,6 +839,10 @@ function TOOL:ApplyMaterial( ent, material )
 	if ( not game.SinglePlayer() and not list.Contains( "OverrideMaterials", material ) and material ~= "" ) then return end
 
 	ent:SetMaterial( material )
+	local aEnt = ent.AttachedEntity
+	if IsValid(aEnt) then
+		aEnt:SetMaterial( material )
+	end
 	duplicator.StoreEntityModifier( ent, "material", { MaterialOverride = material } )
 end
 
@@ -846,6 +858,13 @@ function TOOL:ApplyColor( ent, data )
 	ent:SetColor( data.Color )
 	ent:SetRenderMode( data.RenderMode )
 	ent:SetRenderFX( data.RenderFX )
+	
+	local aEnt = ent.AttachedEntity
+	if IsValid(aEnt) then
+		aEnt:SetColor( data.Color )
+		aEnt:SetRenderMode( data.RenderMode )
+		aEnt:SetRenderFX( data.RenderFX )
+	end
 	
 	duplicator.StoreEntityModifier( ent, "colour", table.Copy( data ) )
 end
@@ -1059,8 +1078,8 @@ if ( CLIENT ) then
 		if ( not shouldGhostAll() and count ~= 0 ) then count = 1 end
 		if ( maxCount >= 0 and count > maxCount )  then count = maxCount end
 
-		local entMod  = ent:GetModel()
-		local entSkin = ent:GetSkin()
+		local entMod  = IsValid(ent.AttachedEntity) and ent.AttachedEntity:GetModel() or ent:GetModel()
+		local entSkin = IsValid(ent.AttachedEntity) and ent.AttachedEntity:GetSkin() or ent:GetSkin()
 		
 		local ghosts = {}
 		local ghost
@@ -1133,16 +1152,19 @@ if ( CLIENT ) then
 		local applyMat  = shouldApplyMaterial()
 		local applyCol  = shouldApplyColor()
 		
+		local isEffect = ent:GetClass() == "prop_effect"
+		local effectEnt = isEffect and ent.AttachedEntity or ent
+		
 		local lastEnt = ent
 		local entPos = ent:GetPos()
 		local entAng = ent:GetAngles()
-		local entMat = ent:GetMaterial()
-		local entCol = ent:GetColor()
+		local entMat = effectEnt:GetMaterial()
+		local entCol = effectEnt:GetColor()
 			  entCol.a = getOpacity()
 		
 		local direction, offset
 		-- we only need to calculate the distance once based on the direction the user selected
-		local distance = improvedstacker.GetDistance( stackMode, stackDirection, ent )
+		local distance = improvedstacker.GetDistance( stackMode, stackDirection, effectEnt )
 		
 		local ghost
 		local ghosts = improvedstacker.GetGhosts()
@@ -1187,7 +1209,7 @@ if ( CLIENT ) then
 		
 		-- check if we're looking at a valid entity
 		local lookingAt = ply:GetEyeTrace().Entity
-		if ( not ( IsValid( lookingAt ) and lookingAt:GetClass() == "prop_physics" ) ) then
+		if ( not ( IsValid( lookingAt ) and ( lookingAt:GetClass() == "prop_physics" ) or lookingAt:GetClass() == "prop_effect") ) then
 			improvedstacker.ReleaseGhosts()
 			improvedstacker.SetLookedAt( nil )
 			return
